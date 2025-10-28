@@ -1,18 +1,4 @@
 {
-  "version": 2,
-  "name": "testable-news-classification",
-  "builds": [
-    {
-      "src": "frontend/index.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
