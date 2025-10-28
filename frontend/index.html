@@ -446,7 +446,23 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5001/api/test-classify';
+        // ========== ENVIRONMENT CONFIGURATION ==========
+        // Auto-detect local vs production environment
+        const isLocalhost = window.location.hostname === 'localhost' ||
+                           window.location.hostname === '127.0.0.1' ||
+                           window.location.hostname === '';
+
+        // Hugging Face Spaces backend URL
+        const HF_BACKEND_URL = 'https://ziyan0219-testable-news-classification.hf.space';
+
+        // Automatically select correct backend URL
+        const BASE_URL = isLocalhost ? 'http://localhost:5001' : HF_BACKEND_URL;
+        const API_URL = `${BASE_URL}/api/test-classify`;
+        const HEALTH_URL = `${BASE_URL}/api/health`;
+
+        console.log(`🌍 Environment: ${isLocalhost ? 'Local Development' : 'Production'}`);
+        console.log(`🔗 Backend: ${BASE_URL}`);
+        // ===============================================
 
         // Toggle info section
         function toggleInfo() {
@@ -654,12 +670,15 @@
             }
         });
 
-        // Check API connection
-        fetch('http://localhost:5001/api/health')
+        // Check API connection on page load
+        fetch(HEALTH_URL)
             .then(res => res.json())
-            .then(data => console.log('✅ API connected:', data))
+            .then(data => {
+                console.log('✅ API connected:', data);
+                showSuccess(`✅ Connected to backend: ${BASE_URL}`);
+            })
             .catch(() => {
-                showError('⚠️ Cannot connect to API server (http://localhost:5001). Please ensure backend is running.');
+                showError(`⚠️ Cannot connect to API server (${BASE_URL}). Please ensure backend is running.`);
             });
     </script>
 </body>

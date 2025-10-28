@@ -1,0 +1,59 @@
+# Docker ignore file for Hugging Face Spaces deployment
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation (not needed in container)
+COMPLETE_USER_GUIDE.md
+DEPLOYMENT.md
+GITHUB_SETUP.md
+VERCEL_ANALYSIS.md
+SUMMARY.md
+
+# Test files (optional, include if needed for testing)
+example_test.xlsx
+test_*.py
+
+# Temporary files
+*.log
+*.tmp
+.cache/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Vercel config (not needed for backend)
+vercel.json
+
+# Frontend (only backend needed in Docker)
+# Note: We're keeping frontend in case it's used for static serving
+# frontend/
+
+# Local development files
+*.local
+.env.local
+.env.*.local

@@ -16,13 +16,13 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import shutil
 
-# Add parent directory to path to import classification modules
-project_root = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(project_root)
+# Add testing-tool directory to path to import classification modules
+testing_tool_root = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(testing_tool_root)
 
-# Change to project root directory so relative paths work
+# Change to testing-tool root directory so relative paths work
 original_cwd = os.getcwd()
-os.chdir(project_root)
+os.chdir(testing_tool_root)
 
 # Import the SAME classification pipeline used by main dashboard
 from archive_classifier_final import pipeline, read_stories
@@ -95,9 +95,9 @@ def classify_stories(stories_data):
 
     df.to_csv(temp_csv, index=False)
 
-    # Set up paths (SAME as main dashboard)
-    neigh_path = Path(os.path.join(os.path.dirname(__file__), '..', '..', 'Pittsburgh neighborhoods.xlsx'))
-    muni_path = Path(os.path.join(os.path.dirname(__file__), '..', '..', 'Allegheny County Municipalities.xlsx'))
+    # Set up paths (now within testing-tool directory)
+    neigh_path = Path(os.path.join(os.path.dirname(__file__), '..', 'Pittsburgh neighborhoods.xlsx'))
+    muni_path = Path(os.path.join(os.path.dirname(__file__), '..', 'Allegheny County Municipalities.xlsx'))
     output_dir = temp_dir / 'output'
 
     # Get API key (optional, teaser generation disabled)
@@ -274,12 +274,15 @@ def index():
     })
 
 if __name__ == '__main__':
+    # Support both local development (port 5001) and Hugging Face Spaces (port 7860)
+    port = int(os.environ.get('PORT', 5001))
+
     print("=" * 60)
     print("PublicSource Classification Testing Tool")
     print("=" * 60)
-    print(f"Starting server on http://localhost:5001")
+    print(f"Starting server on http://0.0.0.0:{port}")
     print(f"Using SAME classification logic as main dashboard")
     print(f"Test mode: Results NOT saved to database")
     print("=" * 60)
 
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)
